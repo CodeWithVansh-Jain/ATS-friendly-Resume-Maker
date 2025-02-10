@@ -1,1 +1,0 @@
-# ATS friendly Resume Maker
