@@ -1,266 +1,209 @@
-﻿<%@ Page Language="C#"  AutoEventWireup="true" EnableViewState="true" EnableEventValidation="false" CodeBehind="form.aspx.cs" Inherits="ATS_friendly_Resume_Maker.Resume_Maker" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" EnableViewState="true" EnableEventValidation="false"
+    CodeBehind="form.aspx.cs" Inherits="ATS_friendly_Resume_Maker.Resume_Maker" %>
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title>ATS Resume Maker</title>
-    <style>
-        /* Container Styles */
-        .form-container {
-            margin: 20px auto;
-            padding: 25px;
-            max-width: 550px;
-            border-radius: 12px;
-            background-color: #f9f9f9;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-            border: 1px solid #ddd;
-            transition: all 0.3s ease;
-        }
+    <!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml">
 
-            .form-container:hover {
-                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-            }
+    <head runat="server">
+        <title>ATS Resume Maker</title>
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    </head>
 
-        label {
-            font-weight: 600;
-            font-size: 14px;
-            color: #333;
-            margin-bottom: 8px;
-            display: block;
-            transition: color 0.3s ease;
-        }
+    <body>
+        <form id="form1" runat="server">
 
-        .form-container input,
-        .form-container select,
-        .form-container textarea {
-            width: 93%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            background-color: #fff;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        }
+            <div class="container mt-5">
+                <h1 class="text-center">ATS-Friendly Resume Maker</h1>
 
-        .form-container button,
-        .form-container .btn {
-            padding: 14px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            width: 100%;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            margin-top: 10px;
-        }
+                <asp:ScriptManager ID="ScriptManager1" runat="server" />
+<!-- Personal Info -->
+                <div class="container mt-4">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h4 class="mb-0">User Information</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">First Name:</label>
+                                <asp:TextBox ID="txtFirstName" runat="server" CssClass="form-control"
+                                    placeholder="Enter first name"></asp:TextBox>
+                            </div>
 
-            .form-container button:hover,
-            .form-container .btn:hover {
-                background-color: #0056b3;
-            }
+                            <div class="mb-3">
+                                <label class="form-label">Last Name:</label>
+                                <asp:TextBox ID="txtLastName" runat="server" CssClass="form-control"
+                                    placeholder="Enter last name"></asp:TextBox>
+                            </div>
 
-        .employment-entry, .education-entry, .link-entry, .skill-entry {
-            margin-bottom: 20px;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            background-color: #fff;
-        }
+                            <div class="mb-3">
+                                <label class="form-label">Job Title:</label>
+                                <asp:TextBox ID="txtJobTitle" runat="server" CssClass="form-control"
+                                    placeholder="Enter job title"></asp:TextBox>
+                            </div>
 
-        .btn-remove {
-            background-color: #dc3545 !important;
-            margin-top: 15px;
-        }
+                            <div class="mb-3">
+                                <label class="form-label">Email:</label>
+                                <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control"
+                                    placeholder="Enter email" TextMode="Email"></asp:TextBox>
+                            </div>
 
-            .btn-remove:hover {
-                background-color: #c82333 !important;
-            }
+                            <div class="mb-3">
+                                <label class="form-label">Phone Number:</label>
+                                <asp:TextBox ID="txtPhone" runat="server" CssClass="form-control"
+                                    placeholder="Enter phone number" TextMode="Phone"></asp:TextBox>
+                            </div>
 
-        .date-container, .years-container {
-            display: flex;
-            gap: 10px;
-        }
+                            <div class="mb-3">
+                                <label class="form-label">Country:</label>
+                                <asp:TextBox ID="txtCountry" runat="server" CssClass="form-control"
+                                    placeholder="Enter country"></asp:TextBox>
+                            </div>
 
-        .action-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
+                            <div class="mb-3">
+                                <label class="form-label">City:</label>
+                                <asp:TextBox ID="txtCity" runat="server" CssClass="form-control"
+                                    placeholder="Enter city"></asp:TextBox>
+                            </div>
 
-            .action-buttons .btn {
-                flex: 1;
-                min-width: 200px;
-            }
-    </style>
-</head>
-<body>
-    <form id="form1" runat="server">
-        <div class="form-container">
-            <h1>ATS-Friendly Resume Maker</h1>
-
-            <asp:ScriptManager ID="ScriptManager1" runat="server" />
-            <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
-                <ContentTemplate>
-                    <div class="action-buttons">
-                        <asp:Button ID="btnAddEmployment" runat="server" Text="Add Employment" OnClick="btnAddEmployment_Click" CssClass="btn" />
-                        <asp:Button ID="btnAddEducation" runat="server" Text="Add Education" OnClick="btnAddEducation_Click" CssClass="btn" />
-                        <asp:Button ID="btnAddWebsite" runat="server" Text="Add Website" OnClick="btnAddWebsite_Click" CssClass="btn" />
-                        <asp:Button ID="btnAddSkills" runat="server" Text="Add Skills" OnClick="btnAddSkills_Click" CssClass="btn" />
+                            <asp:Button ID="btnSubmit" runat="server" Text="Submit" CssClass="btn btn-primary"
+                                OnClick="btnSubmit_Click" />
+                        </div>
                     </div>
+                </div>
 
-                    <asp:Panel ID="pnlForms" runat="server">
-                        <!-- Employment Section -->
-                        <asp:Repeater ID="rptEmployment" runat="server" OnItemCommand="rptEmployment_ItemCommand" OnItemDataBound="rptEmployment_ItemDataBound">
-                            <ItemTemplate>
-                                <div class="employment-entry">
-                                    <h3>Employment Information</h3>
+                <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+                    <ContentTemplate>
+                        <!-- Action Buttons -->
+                        <div class="d-flex flex-wrap gap-2 justify-content-center mb-3">
+                            <asp:Button ID="btnAddEmployment" runat="server" Text="Add Employment"
+                                OnClick="btnAddEmployment_Click" CssClass="btn btn-primary" />
+                            <asp:Button ID="btnAddEducation" runat="server" Text="Add Education"
+                                OnClick="btnAddEducation_Click" CssClass="btn btn-primary" />
+                            <asp:Button ID="btnAddWebsite" runat="server" Text="Add Website"
+                                OnClick="btnAddWebsite_Click" CssClass="btn btn-primary" />
+                            <asp:Button ID="btnAddSkills" runat="server" Text="Add Skills" OnClick="btnAddSkills_Click"
+                                CssClass="btn btn-primary" />
+                        </div>
 
-                                    <label for="txtCompany">Company Name:</label>
-                                    <asp:TextBox ID="txtCompany" runat="server" placeholder="Enter company name"></asp:TextBox>
+                        <asp:Panel ID="pnlForms" runat="server">
 
-                                    <label for="txtTitle">Job Title:</label>
-                                    <asp:TextBox ID="txtTitle" runat="server" placeholder="Enter job title"></asp:TextBox>
-
-                                    <label for="ddlEmployment">Employment Type:</label>
-                                    <asp:DropDownList ID="ddlEmployment" runat="server">
-                                        <asp:ListItem Text="Full-time" Value="Full-time" />
-                                        <asp:ListItem Text="Part-time" Value="Part-time" />
-                                        <asp:ListItem Text="Contract" Value="Contract" />
-                                        <asp:ListItem Text="Freelance" Value="Freelance" />
-                                        <asp:ListItem Text="Internship" Value="Internship" />
-                                    </asp:DropDownList>
-
-                                    <label>Start Date:</label>
-                                    <div class="date-container">
-                                        <asp:DropDownList ID="ddlStartMonth" runat="server">
-                                            <asp:ListItem Text="January" Value="1" />
-                                            <asp:ListItem Text="February" Value="2" />
-                                            <asp:ListItem Text="March" Value="3" />
-                                            <asp:ListItem Text="April" Value="4" />
-                                            <asp:ListItem Text="May" Value="5" />
-                                            <asp:ListItem Text="June" Value="6" />
-                                            <asp:ListItem Text="July" Value="7" />
-                                            <asp:ListItem Text="August" Value="8" />
-                                            <asp:ListItem Text="September" Value="9" />
-                                            <asp:ListItem Text="October" Value="10" />
-                                            <asp:ListItem Text="November" Value="11" />
-                                            <asp:ListItem Text="December" Value="12" />
-                                        </asp:DropDownList>
-
-                                        <asp:DropDownList ID="ddlStartYear" runat="server">
-                                        </asp:DropDownList>
+                            <!-- 🏢 Employment Section -->
+                            <asp:Repeater ID="rptEmployment" runat="server" OnItemCommand="rptEmployment_ItemCommand">
+                                <ItemTemplate>
+                                    <div class="card mb-3">
+                                        <div class="card-body">
+                                            <h3 class="card-title">Employment Information</h3>
+                                            <div class="mb-2">
+                                                <label class="form-label">Company Name:</label>
+                                                <asp:TextBox ID="txtCompany" runat="server" CssClass="form-control"
+                                                    placeholder="Enter company name"></asp:TextBox>
+                                            </div>
+                                            <div class="mb-2">
+                                                <label class="form-label">Job Title:</label>
+                                                <asp:TextBox ID="txtTitle" runat="server" CssClass="form-control"
+                                                    placeholder="Enter job title"></asp:TextBox>
+                                            </div>
+                                            <asp:Button ID="btnRemove" runat="server" Text="Remove"
+                                                CssClass="btn btn-danger mt-2" CommandName="Remove"
+                                                CommandArgument="<%# Container.ItemIndex %>" />
+                                        </div>
                                     </div>
+                                </ItemTemplate>
+                            </asp:Repeater>
 
-                                    <label>End Date:</label>
-                                    <div class="date-container">
-                                        <asp:DropDownList ID="ddlEndMonth" runat="server">
-                                            <asp:ListItem Text="January" Value="1" />
-                                            <asp:ListItem Text="February" Value="2" />
-                                            <asp:ListItem Text="March" Value="3" />
-                                            <asp:ListItem Text="April" Value="4" />
-                                            <asp:ListItem Text="May" Value="5" />
-                                            <asp:ListItem Text="June" Value="6" />
-                                            <asp:ListItem Text="July" Value="7" />
-                                            <asp:ListItem Text="August" Value="8" />
-                                            <asp:ListItem Text="September" Value="9" />
-                                            <asp:ListItem Text="October" Value="10" />
-                                            <asp:ListItem Text="November" Value="11" />
-                                            <asp:ListItem Text="December" Value="12" />
-                                        </asp:DropDownList>
-
-                                        <asp:DropDownList ID="ddlEndYear" runat="server">
-                                        </asp:DropDownList>
+                            <!-- 🎓 Education Section -->
+                            <asp:Repeater ID="rptEducation" runat="server" OnItemCommand="rptEducation_ItemCommand">
+                                <ItemTemplate>
+                                    <div class="card mb-3">
+                                        <div class="card-body">
+                                            <h3 class="card-title">Education</h3>
+                                            <div class="mb-2">
+                                                <label class="form-label">School/University:</label>
+                                                <asp:TextBox ID="txtSchool" runat="server" CssClass="form-control"
+                                                    placeholder="Enter school/university name"></asp:TextBox>
+                                            </div>
+                                            <div class="mb-2">
+                                                <label class="form-label">Degree:</label>
+                                                <asp:TextBox ID="txtDegree" runat="server" CssClass="form-control"
+                                                    placeholder="Enter degree"></asp:TextBox>
+                                            </div>
+                                            <asp:Button ID="btnRemove" runat="server" Text="Remove"
+                                                CssClass="btn btn-danger mt-2" CommandName="Remove"
+                                                CommandArgument="<%# Container.ItemIndex %>" />
+                                        </div>
                                     </div>
+                                </ItemTemplate>
+                            </asp:Repeater>
 
-                                    <label for="txtLocation">Location:</label>
-                                    <asp:TextBox ID="txtLocation" runat="server" placeholder="City, State, Country"></asp:TextBox>
-
-                                    <label for="txtDescription">Description:</label>
-                                    <asp:TextBox ID="txtDescription" runat="server" TextMode="MultiLine" Rows="4"
-                                        placeholder="Describe your responsibilities and achievements"></asp:TextBox>
-
-                                    <asp:Button ID="btnRemove" runat="server" Text="Remove" CssClass="btn-remove"
-                                        CommandName="Remove" CommandArgument="<%# Container.ItemIndex %>" />
-                                </div>
-                            </ItemTemplate>
-                        </asp:Repeater>
-
-                        <!-- Education Section -->
-                        <asp:Repeater ID="rptEducation" runat="server" OnItemCommand="rptEducation_ItemCommand" OnItemDataBound="rptEducation_ItemDataBound">
-                            <ItemTemplate>
-                                <div class="education-entry">
-                                    <h3>Education Information</h3>
-
-                                    <label for="txtSchool">School Name:</label>
-                                    <asp:TextBox ID="txtSchool" runat="server" placeholder="Enter school name"></asp:TextBox>
-
-                                    <label for="txtDegree">Degree:</label>
-                                    <asp:TextBox ID="txtDegree" runat="server" placeholder="Enter degree"></asp:TextBox>
-
-                                    <label>Years Attended:</label>
-                                    <div class="years-container">
-                                        <asp:DropDownList ID="ddlStartYear" runat="server">
-                                        </asp:DropDownList>
-                                        <span>to</span>
-                                        <asp:DropDownList ID="ddlEndYear" runat="server">
-                                        </asp:DropDownList>
+                            <!-- 🌐 Website Section -->
+                            <asp:Repeater ID="rptWebsite" runat="server" OnItemCommand="rptWebsite_ItemCommand">
+                                <ItemTemplate>
+                                    <div class="card mb-3">
+                                        <div class="card-body">
+                                            <h3 class="card-title">Website</h3>
+                                            <div class="mb-2">
+                                                <label class="form-label">Website Name:</label>
+                                                <asp:TextBox ID="txtWebsite" runat="server" CssClass="form-control"
+                                                    placeholder="Enter website name"></asp:TextBox>
+                                            </div>
+                                            <div class="mb-2">
+                                                <label class="form-label">URL:</label>
+                                                <asp:TextBox ID="txtUrl" runat="server" CssClass="form-control"
+                                                    placeholder="Enter website URL"></asp:TextBox>
+                                            </div>
+                                            <asp:Button ID="btnRemove" runat="server" Text="Remove"
+                                                CssClass="btn btn-danger mt-2" CommandName="Remove"
+                                                CommandArgument="<%# Container.ItemIndex %>" />
+                                        </div>
                                     </div>
+                                </ItemTemplate>
+                            </asp:Repeater>
 
-                                    <label for="txtCity">City:</label>
-                                    <asp:TextBox ID="txtCity" runat="server" placeholder="City, State, Country"></asp:TextBox>
-
-                                    <label for="txtEduDescription">Description:</label>
-                                    <asp:TextBox ID="txtEduDescription" runat="server" TextMode="MultiLine" Rows="4"
-                                        placeholder="Describe your studies, achievements, activities"></asp:TextBox>
-
-                                    <asp:Button ID="btnRemove" runat="server" Text="Remove" CssClass="btn-remove"
-                                        CommandName="Remove" CommandArgument="<%# Container.ItemIndex %>" />
-                                </div>
-                            </ItemTemplate>
-                        </asp:Repeater>
-
-                        <!-- Website/Links Section -->
-                        <asp:Repeater ID="rptLinks" runat="server" OnItemCommand="rptLinks_ItemCommand" OnItemDataBound="rptLinks_ItemDataBound">
+                            <!-- 🛠️ Skills Section -->
+                            <!-- <asp:Repeater ID="rptSkills" runat="server" OnItemCommand="rptSkills_ItemCommand">
                             <ItemTemplate>
-                                <div class="link-entry">
-                                    <h3>Website/Link Information</h3>
-
-                                    <label for="txtLabel">Label:</label>
-                                    <asp:TextBox ID="txtLabel" runat="server" placeholder="Enter label (e.g., Portfolio, LinkedIn)"></asp:TextBox>
-
-                                    <label for="txtUrl">URL:</label>
-                                    <asp:TextBox ID="txtUrl" runat="server" placeholder="Enter URL"></asp:TextBox>
-
-                                    <asp:Button ID="btnRemove" runat="server" Text="Remove" CssClass="btn-remove"
-                                        CommandName="Remove" CommandArgument="<%# Container.ItemIndex %>" />
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <h3 class="card-title">Skills</h3>
+                                        <div class="mb-2">
+                                            <label class="form-label">Skill:</label>
+                                     …ntrol" placeholder="Enter skill"></asp:TextBox>
+                                        </div>
+                                        <asp:Button ID="btnRemove" runat="server" Text="Remove" CssClass="btn btn-danger mt-2"
+                                            CommandName="Remove" CommandArgument="<%# Container.ItemIndex %>" />
+                                    </div>
                                 </div>
                             </ItemTemplate>
-                        </asp:Repeater>
+                        </asp:Repeater> -->
 
-                        <!-- Skills Section -->
-                        <asp:Repeater ID="rptSkills" runat="server" OnItemCommand="rptSkills_ItemCommand">
-                            <ItemTemplate>
-                                <div class="skill-entry">
-                                    <h3>Skills Information</h3>
-
-                                    <label for="txtSkill">Skill:</label>
-                                    <asp:TextBox ID="txtSkill" runat="server" placeholder="Enter skill"></asp:TextBox>
-
-                                    <asp:Button ID="btnRemove" runat="server" Text="Remove" CssClass="btn-remove"
-                                        CommandName="Remove" CommandArgument="<%# Container.ItemIndex %>" />
+                        </asp:Panel>
+                        <!-- 🛠️ Skills Section (Single Input) -->
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h3 class="card-title">Skills</h3>
+                                <div class="mb-2">
+                                    <label class="form-label">Enter Skills (Comma Separated):</label>
+                                    <asp:TextBox ID="txtSkills" runat="server" CssClass="form-control"
+                                        placeholder="E.g., Python, Java, AWS, Docker"></asp:TextBox>
                                 </div>
-                            </ItemTemplate>
-                        </asp:Repeater>
-                    </asp:Panel>
+                            </div>
+                        </div>
 
-                    <asp:Button ID="btnSubmit" runat="server" Text="Generate Resume" OnClick="btnSubmit_Click" CssClass="btn" />
-                </ContentTemplate>
-            </asp:UpdatePanel>
-        </div>
-    </form>
-</body>
-</html>
+
+                        <!-- Submit Button -->
+                        <div class="text-center mt-3">
+                            <asp:Button ID="btnSubmit" runat="server" Text="Generate Resume" OnClick="btnSubmit_Click"
+                                CssClass="btn btn-success btn-lg" />
+                        </div>
+
+                    </ContentTemplate>
+                </asp:UpdatePanel>
+            </div>
+
+            <!-- Bootstrap JS (for optional features like dropdowns, modals) -->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        </form>
+    </body>
+
+    </html>
