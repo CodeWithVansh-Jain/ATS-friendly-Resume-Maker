@@ -1,20 +1,38 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" EnableEventValidation="false" CodeBehind="form.aspx.cs" Inherits="ATS_friendly_Resume_Maker.form" %>
+<%@ Page Language="C#" AutoEventWireup="true" EnableEventValidation="false" CodeBehind="form.aspx.cs" Inherits="ATS_friendly_Resume_Maker.form" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>ATS Resume Maker</title>
     <style>
+<<<<<<< Updated upstream
+=======
+        body {
+            background: rgb(2,0,36) !important;
+            background: linear-gradient(29deg, rgba(2,0,36,1) 0%, rgba(170,16,184,1) 35%, rgba(255,141,0,1) 100%) !important;
+        }
+>>>>>>> Stashed changes
         /* Container Styles */
         .form-container {
             margin: 20px auto;
             padding: 25px;
             max-width: 550px;
             border-radius: 12px;
+<<<<<<< Updated upstream
             background-color: #f9f9f9;
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
             border: 1px solid #ddd;
             transition: all 0.3s ease;
+=======
+            box-shadow: 0 10px 30px rgba(177, 130, 242, 1);
+            border: 1px solid #ddd;
+            transition: all 0.3sease;
+            font-family: "Raleway", serif;
+            background-color: #333333;
+            border-color: #777777;
+            color: white;
+            border-style: none !important;
+>>>>>>> Stashed changes
         }
 
             .form-container:hover {
@@ -24,7 +42,7 @@
         label {
             font-weight: 600;
             font-size: 14px;
-            color: #333;
+            color: white;
             margin-bottom: 8px;
             display: block;
             transition: color 0.3s ease;
@@ -39,9 +57,12 @@
             border: 1px solid #ddd;
             border-radius: 8px;
             font-size: 16px;
-            background-color: #fff;
+            background-color: #e0e0e0;
+            color: black;
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
+
+
 
         .form-container button,
         .form-container .btn {
@@ -59,7 +80,11 @@
 
             .form-container button:hover,
             .form-container .btn:hover {
+<<<<<<< Updated upstream
                 background-color: #0056b3;
+=======
+                background-color: #5c6bc0;
+>>>>>>> Stashed changes
             }
 
         .employment-entry, .education-entry, .link-entry, .skill-entry {
@@ -67,21 +92,33 @@
             padding: 15px;
             border: 1px solid #ddd;
             border-radius: 8px;
-            background-color: #fff;
+            background-color: #2e2e2e;
+            color: white;
         }
 
         .btn-remove {
+<<<<<<< Updated upstream
             background-color: #dc3545 !important;
             margin-top: 15px;
+=======
+            background-color: #ff7043 !important;
+            margin-left: 462px !important;
+            padding: 5px 1.5rem !important;
+            font-size: 1rem !important;
+            border-radius: 50px !important;
+            color: white !important;
+            border-style: none !important;
+>>>>>>> Stashed changes
         }
 
             .btn-remove:hover {
-                background-color: #c82333 !important;
+                background-color: #e64a19 !important;
             }
             
         .date-container, .years-container {
             display: flex;
             gap: 10px;
+            color: #b3b3b3;
         }
         
         .action-buttons {
@@ -94,6 +131,14 @@
         .action-buttons .btn {
             flex: 1;
             min-width: 200px;
+        }
+
+        .decor {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            white-space: nowrap;
+            color: #ae74fa;
         }
     </style>
 </head>
@@ -116,11 +161,21 @@
                         <asp:Repeater ID="rptEmployment" runat="server" OnItemCommand="rptEmployment_ItemCommand" OnItemDataBound="rptEmployment_ItemDataBound">
                             <ItemTemplate>
                                 <div class="employment-entry">
+<<<<<<< Updated upstream
                                     <h3>Employment Information</h3>
                                     
+=======
+
+                                    <div class="decor">
+                                        <h3>Employment Information</h3>
+
+                                        <asp:Button ID="btnRemove" runat="server" Text="Remove" CssClass="btn-remove"
+                                            CommandName="Remove" CommandArgument="<%# Container.ItemIndex %>" />
+                                    </div>
+
+>>>>>>> Stashed changes
                                     <label for="txtCompany">Company Name:</label>
                                     <asp:TextBox ID="txtCompany" runat="server" placeholder="Enter company name"></asp:TextBox>
-
                                     <label for="txtTitle">Job Title:</label>
                                     <asp:TextBox ID="txtTitle" runat="server" placeholder="Enter job title"></asp:TextBox>
                                     
@@ -182,8 +237,12 @@
                                     <asp:TextBox ID="txtDescription" runat="server" TextMode="MultiLine" Rows="4" 
                                         placeholder="Describe your responsibilities and achievements"></asp:TextBox>
 
+<<<<<<< Updated upstream
                                     <asp:Button ID="btnRemove" runat="server" Text="Remove" CssClass="btn-remove" 
                                         CommandName="Remove" CommandArgument="<%# Container.ItemIndex %>" />
+=======
+
+>>>>>>> Stashed changes
                                 </div>
                             </ItemTemplate>
                         </asp:Repeater>
@@ -191,8 +250,22 @@
                         <asp:Repeater ID="rptEducation" runat="server" OnItemCommand="rptEducation_ItemCommand" OnItemDataBound="rptEducation_ItemDataBound">
                             <ItemTemplate>
                                 <div class="education-entry">
+<<<<<<< Updated upstream
                                     <h3>Education Information</h3>
                                     
+=======
+
+                                    <div class="decor">
+
+                                        <h3>Education Information</h3>
+
+                                        <asp:Button ID="btnRemove" runat="server" Text="Remove" CssClass="btn-remove"
+                                            CommandName="Remove" CommandArgument="<%# Container.ItemIndex %>" />
+
+                                    </div>
+
+
+>>>>>>> Stashed changes
                                     <label for="txtSchool">School Name:</label>
                                     <asp:TextBox ID="txtSchool" runat="server" placeholder="Enter school name"></asp:TextBox>
 
@@ -215,6 +288,7 @@
                                     <asp:TextBox ID="txtEduDescription" runat="server" TextMode="MultiLine" Rows="4" 
                                         placeholder="Describe your studies, achievements, activities"></asp:TextBox>
 
+<<<<<<< Updated upstream
                                     <asp:Button ID="btnRemove" runat="server" Text="Remove" CssClass="btn-remove" 
                                         CommandName="Remove" CommandArgument="<%# Container.ItemIndex %>"/>
                                 </div>
@@ -234,12 +308,16 @@
 
                                     <asp:Button ID="btnRemove" runat="server" Text="Remove" CssClass="btn-remove"
                                         CommandName="Remove" CommandArgument="<%# Container.ItemIndex %>" />
+=======
+
+>>>>>>> Stashed changes
                                 </div>
                             </ItemTemplate>
                         </asp:Repeater>
 
                         <asp:Repeater ID="rptSkills" runat="server" OnItemCommand="rptSkills_ItemCommand">
                             <ItemTemplate>
+<<<<<<< Updated upstream
                                 <div class="skill-entry">
                                     <h3>Skills Information</h3>
                                     
@@ -248,6 +326,25 @@
                                     
                                     <asp:Button ID="btnRemove" runat="server" Text="Remove" CssClass="btn-remove"
                                         CommandName="Remove" CommandArgument="<%# Container.ItemIndex %>" />
+=======
+                                <div class="link-entry">
+                                    <div class="decor">
+
+                                        <h3>Website/Link Information</h3>
+
+                                        <asp:Button ID="btnRemove" runat="server" Text="Remove" CssClass="btn-remove"
+                                            CommandName="Remove" CommandArgument="<%# Container.ItemIndex %>" />
+                                    </div>
+
+
+                                    <label for="txtLabel">Label:</label>
+                                    <asp:TextBox ID="txtLabel" runat="server" placeholder="Enter label (e.g., Portfolio, LinkedIn)"></asp:TextBox>
+
+                                    <label for="txtUrl">URL:</label>
+                                    <asp:TextBox ID="txtUrl" runat="server" placeholder="Enter URL"></asp:TextBox>
+
+
+>>>>>>> Stashed changes
                                 </div>
                             </ItemTemplate>
                         </asp:Repeater>
