@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Text;
 using System.Web.UI;
+using iText.Html2pdf;
+
 
 namespace ATS_friendly_Resume_Maker
 {
@@ -28,7 +31,10 @@ namespace ATS_friendly_Resume_Maker
                     // Load skills data
                     LoadSkillsData(userId);
                 }
+
+
             }
+
         }
 
         private int GetUserIdFromRequest()
@@ -45,7 +51,7 @@ namespace ATS_friendly_Resume_Maker
                 return userId;
             }
 
-            return 1; // Default for testing
+            return 2; // Default for testing
         }
 
         private void LoadPersonalInfo(int userId)
@@ -108,7 +114,7 @@ namespace ATS_friendly_Resume_Maker
                     {
                         while (reader.Read())
                         {
-                            contactInfo += " | " + reader["Label"].ToString() + ": " + reader["URL"].ToString();
+                            contactInfo += " | " + $"<a href='{reader["URL"]}' target='_blank' style='text-decoration: none; color: inherit;'>{reader["Label"]}</a>";
                         }
                     }
                 }
@@ -258,5 +264,16 @@ namespace ATS_friendly_Resume_Maker
 
             return sb.ToString();
         }
+
+        //private string RenderPageToHtml()
+        //{
+        //    StringBuilder sb = new StringBuilder();
+        //    StringWriter sw = new StringWriter(sb);
+        //    HtmlTextWriter hw = new HtmlTextWriter(sw);
+        //    this.RenderControl(hw);
+        //    return sb.ToString();
+        //}
+
+
     }
 }
