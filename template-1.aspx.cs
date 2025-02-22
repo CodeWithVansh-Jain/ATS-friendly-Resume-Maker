@@ -2,8 +2,10 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Web.UI;
+using iText.Forms;
 using iText.Html2pdf;
 
 
@@ -31,7 +33,12 @@ namespace ATS_friendly_Resume_Maker
                     // Load skills data
                     LoadSkillsData(userId);
                 }
-
+                if (Request.QueryString["forPdf"] == "true")
+                {
+                    // Hide PDF button and any other elements you don't want in the PDF
+                    if (btnOpenPdf != null)
+                        btnOpenPdf.Visible = false;
+                }
 
             }
 
@@ -51,7 +58,7 @@ namespace ATS_friendly_Resume_Maker
                 return userId;
             }
 
-            return 2; // Default for testing
+            return 1; // Default for testing
         }
 
         private void LoadPersonalInfo(int userId)
@@ -184,18 +191,26 @@ namespace ATS_friendly_Resume_Maker
             using (SqlConnection conn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["YourConnectionString"].ConnectionString))
             {
                 string query = "SELECT SkillsText FROM Skills WHERE UserId = @UserId";
-
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@UserId", userId);
                     conn.Open();
 
-                    using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
-                    {
-                        DataTable dt = new DataTable();
-                        adapter.Fill(dt);
+                    // Get the skills text as a single string
+                    string skillsText = (string)cmd.ExecuteScalar();
 
-                        rptSkills.DataSource = dt;
+                    if (!string.IsNullOrEmpty(skillsText))
+                    {
+                        // Parse the skills by splitting on commas
+                        string[] skills = skillsText.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                                                   .Select(s => s.Trim())
+                                                   .ToArray();
+
+                        // Create a data source for the repeater
+                        var skillsList = skills.Select(skill => new { Skill = skill }).ToList();
+
+                        // Bind the parsed skills to the repeater
+                        rptSkills.DataSource = skillsList;
                         rptSkills.DataBind();
                     }
                 }
@@ -263,6 +278,200 @@ namespace ATS_friendly_Resume_Maker
             }
 
             return sb.ToString();
+        }
+
+        //protected void OpenPdfInNewTab(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        // Create a temporary HTML file
+        //        string tempHtmlPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".html");
+        //        string tempPdfPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".pdf");
+
+        //        // Render the page to HTML
+        //        StringBuilder sb = new StringBuilder();
+        //        using (StringWriter sw = new StringWriter(sb))
+        //        {
+        //            using (HtmlTextWriter hw = new HtmlTextWriter(sw))
+        //            {
+        //                // Disable form tag rendering to avoid issues with HTML to PDF conversion
+        //                Page.VerifyRenderingInServerForm(hw);
+        //                Page.Form.Attributes.Add("runat", "server");
+        //                Page.Form.RenderControl(hw);
+        //            }
+        //        }
+
+        //        // Write HTML to temp file
+        //        File.WriteAllText(tempHtmlPath, sb.ToString());
+
+        //        // Convert HTML to PDF using iText
+        //        using (FileStream pdfDest = new FileStream(tempPdfPath, FileMode.Create))
+        //        {
+        //            ConverterProperties converterProperties = new ConverterProperties();
+        //            HtmlConverter.ConvertToPdf(new FileInfo(tempHtmlPath), pdfDest, converterProperties);
+        //        }
+
+        //        // Read PDF into memory
+        //        byte[] pdfBytes = File.ReadAllBytes(tempPdfPath);
+
+        //        // Clean up temp files
+        //        if (File.Exists(tempHtmlPath)) File.Delete(tempHtmlPath);
+        //        if (File.Exists(tempPdfPath)) File.Delete(tempPdfPath);
+
+        //        // Set response headers to display in browser
+        //        Response.Clear();
+        //        Response.ContentType = "application/pdf";
+        //        Response.AddHeader("Content-Disposition", "inline; filename=Resume.pdf");
+        //        Response.Buffer = true;
+        //        Response.BinaryWrite(pdfBytes);
+        //        Response.Flush();
+
+        //        // Use JavaScript to open in new tab
+        //        string script = "window.open('" +
+        //            Request.Url.GetLeftPart(UriPartial.Path) +
+        //            "?action=viewpdf&t=" + DateTime.Now.Ticks +
+        //            "', '_blank');";
+
+        //        ScriptManager.RegisterStartupScript(this, GetType(), "OpenPDF", script, true);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log the error and display message
+        //        Response.Write($"<script>alert('Error generating PDF: {ex.Message}');</script>");
+        //    }
+        //}
+        //protected void OpenPdfInNewTab(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        // Create unique filename for this session
+        //        string fileName = "Resume_" + Guid.NewGuid().ToString() + ".pdf";
+        //        string tempFolder = "~/TempPDF";
+        //        string physicalPath = Server.MapPath(tempFolder);
+
+        //        // Create folder if it doesn't exist
+        //        if (!Directory.Exists(physicalPath))
+        //            Directory.CreateDirectory(physicalPath);
+
+        //        string pdfPath = Path.Combine(physicalPath, fileName);
+
+        //        // Render the page to HTML
+        //        StringBuilder sb = new StringBuilder();
+        //        using (StringWriter sw = new StringWriter(sb))
+        //        {
+        //            using (HtmlTextWriter hw = new HtmlTextWriter(sw))
+        //            {
+        //                Page.VerifyRenderingInServerForm(hw);
+        //                Page.Form.Attributes.Add("runat", "server");
+        //                Page.Form.RenderControl(hw);
+        //            }
+        //        }
+
+        //        // Convert HTML to PDF using iText
+        //        using (FileStream pdfDest = new FileStream(pdfPath, FileMode.Create))
+        //        {
+        //            ConverterProperties converterProperties = new ConverterProperties();
+        //            HtmlConverter.ConvertToPdf(sb.ToString(), pdfDest, converterProperties);
+        //        }
+
+        //        // Generate URL to the PDF
+        //        string pdfUrl = ResolveUrl(tempFolder + "/" + fileName);
+
+        //        // Use JavaScript to open in new tab
+        //        string script = "window.open('" + pdfUrl + "', '_blank');";
+        //        ScriptManager.RegisterStartupScript(this, GetType(), "OpenPDF", script, true);
+
+        //        // Schedule cleanup (you might want to implement a cleanup routine that runs periodically)
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Response.Write($"<script>alert('Error generating PDF: {ex.Message}');</script>");
+        //    }
+        //}
+
+        protected void OpenPdfInNewTab(object sender, EventArgs e)
+        {
+            try
+            {
+                // Create unique filename for this session
+                string fileName = "Resume_" + Guid.NewGuid().ToString() + ".pdf";
+                string tempFolder = "~/TempPDF";
+                string physicalPath = Server.MapPath(tempFolder);
+
+                // Create folder if it doesn't exist
+                if (!Directory.Exists(physicalPath))
+                    Directory.CreateDirectory(physicalPath);
+
+                string pdfPath = Path.Combine(physicalPath, fileName);
+
+                // Get current URL with parameter to indicate PDF rendering
+                string currentUrl = Request.Url.GetLeftPart(UriPartial.Path);
+                if (Request.Url.Query.Length > 0)
+                    currentUrl += Request.Url.Query + "&forPdf=true";
+                else
+                    currentUrl += "?forPdf=true";
+
+                // Get the HTML content
+                string htmlContent;
+                using (var client = new System.Net.WebClient())
+                {
+                    // Pass authentication cookies if needed
+                    client.Headers.Add("Cookie", Request.Headers["Cookie"]);
+                    htmlContent = client.DownloadString(currentUrl);
+                }
+
+                // Convert HTML to PDF using iText7
+                using (FileStream pdfDest = new FileStream(pdfPath, FileMode.Create))
+                {
+                    // Configure iText converter
+                    ConverterProperties converterProperties = new ConverterProperties();
+
+                    // You can customize PDF properties here
+                    // For example, set base URI for resolving relative resources
+                    converterProperties.SetBaseUri(Request.Url.GetLeftPart(UriPartial.Authority));
+
+                    // Convert HTML string to PDF
+                    HtmlConverter.ConvertToPdf(htmlContent, pdfDest, converterProperties);
+                }
+
+                // Generate URL to the PDF
+                string pdfUrl = ResolveUrl(tempFolder + "/" + fileName);
+
+                // Use JavaScript to open in new tab
+                string script = "window.open('" + pdfUrl + "', '_blank');";
+                ScriptManager.RegisterStartupScript(this, GetType(), "OpenPDF", script, true);
+
+                // Optional: Add cleanup code to delete old PDFs
+                CleanupOldPdfFiles(physicalPath, 24); // Delete files older than 24 hours
+            }
+            catch (Exception ex)
+            {
+                Response.Write($"<script>alert('Error generating PDF: {ex.Message}');</script>");
+            }
+        }
+
+        // Helper method to clean up old PDF files
+        private void CleanupOldPdfFiles(string directory, int hoursOld)
+        {
+            try
+            {
+                DirectoryInfo di = new DirectoryInfo(directory);
+                foreach (FileInfo file in di.GetFiles("*.pdf"))
+                {
+                    if (file.CreationTime < DateTime.Now.AddHours(-hoursOld))
+                    {
+                        file.Delete();
+                    }
+                }
+            }
+            catch
+            {
+                // Just ignore cleanup errors
+            }
+        }
+        public override void VerifyRenderingInServerForm(Control control)
+        {
+            // Disable verification for PDF export
         }
 
         //private string RenderPageToHtml()

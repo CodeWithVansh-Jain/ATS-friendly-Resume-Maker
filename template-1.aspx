@@ -69,29 +69,31 @@
 
         <h1 align="left"><font color="#2a7b88"><font face="Cambria, serif"><font size="4" style="font-size: 14pt"><b>Skills & Abilities</b></font></font></font></h1>
 
-        <div class="Skills">
-            <asp:Repeater ID="rptSkills" runat="server">
-                <ItemTemplate>
-                    <table width="100%" cellpadding="0" cellspacing="0">
-                        <col width="137*" />
-                        <col width="119*" />
-                        <tr valign="top">
-                            <td width="100%" style="border: none; padding: 0cm">
-                                <ul>
-                                    <li>
-                                        <p align="left" style="orphans: 0; widows: 0; margin-bottom: 0.42cm">
-                                            <font color="#000000"><font face="Cambria, serif"><font size="3" style="font-size: 12pt">
-                                                <%# Eval("SkillsText") %>
-                                            </font></font></font>
-                                        </p>
-                                    </li>
-                                </ul>
-                            </td>
-                        </tr>
-                    </table>
-                </ItemTemplate>
-            </asp:Repeater>
-        </div>
+       <div class="Skill">
+    <table width="100%" cellpadding="0" cellspacing="0">
+        <col width="137*" />
+        <col width="119*" />
+        <tr valign="top">
+            <td width="100%" style="border: none; padding: 0cm">
+                <ul>
+                    <asp:Repeater ID="rptSkills" runat="server">
+                        <ItemTemplate>
+                            <li>
+                                <p align="left" style="orphans: 0; widows: 0; margin-bottom: 0.42cm">
+                                    <font color="#000000"><font face="Cambria, serif"><font size="3" style="font-size: 12pt">
+                                        <%# Eval("Skill") %>
+                                    </font></font></font>
+                                </p>
+                            </li>
+                        </ItemTemplate>
+                    </asp:Repeater>
+                </ul>
+            </td>
+        </tr>
+    </table>
+</div>
+          
     </form>
+    <asp:Button ID="btnOpenPdf" runat="server" Text="Open as PDF" OnClick="OpenPdfInNewTab" CssClass="pdf-button" />
 </body>
 </html>
