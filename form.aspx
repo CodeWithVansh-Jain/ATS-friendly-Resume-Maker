@@ -10,8 +10,8 @@
     <style>
         body {
             background-color: #ffffff;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' %3E%3Cdefs%3E%3ClinearGradient id='a' x1='0' x2='0' y1='0' y2='1'%3E%3Cstop offset='0' stop-color='%23000000'/%3E%3Cstop offset='1' stop-color='%238C0394'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpattern id='b' width='24' height='24' patternUnits='userSpaceOnUse'%3E%3Ccircle fill='%23ffffff' cx='12' cy='12' r='12'/%3E%3C/pattern%3E%3Crect width='100%25' height='100%25' fill='url(%23a)'/%3E%3Crect width='100%25' height='100%25' fill='url(%23b)' fill-opacity='0.1'/%3E%3C/svg%3E");
-            background-attachment: fixed;
+            /*            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' %3E%3Cdefs%3E%3ClinearGradient id='a' x1='0' x2='0' y1='0' y2='1'%3E%3Cstop offset='0' stop-color='%23000000'/%3E%3Cstop offset='1' stop-color='%238C0394'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpattern id='b' width='24' height='24' patternUnits='userSpaceOnUse'%3E%3Ccircle fill='%23ffffff' cx='12' cy='12' r='12'/%3E%3C/pattern%3E%3Crect width='100%25' height='100%25' fill='url(%23a)'/%3E%3Crect width='100%25' height='100%25' fill='url(%23b)' fill-opacity='0.1'/%3E%3C/svg%3E");
+            background-attachment: fixed;*/
         }
 
         /* Container Styles */
@@ -21,12 +21,12 @@
             max-width: 850px;
             border-radius: 12px;
             box-shadow: 0 10px 30px rgba(177, 130, 242, 1);
-            border: 1px solid #ddd;
+            border: 1px solid #ffff;
             transition: all 0.3s ease;
             font-family: "Raleway", serif;
-            background-color: #333333;
-            border-color: #777777;
-            color: white;
+            background-color: #ffffff;
+            border-color: #ffffff;
+            color: #000000;
             border-style: none !important;
         }
 
@@ -37,7 +37,7 @@
         label {
             font-weight: 600;
             font-size: 14px;
-            color: white;
+            color: black;
             margin-bottom: 8px;
             display: block;
             transition: color 0.3s ease;
@@ -79,10 +79,11 @@
         .employment-entry, .education-entry, .link-entry, .skill-entry {
             margin-bottom: 20px;
             padding: 15px;
-            border: 0px solid #ddd;
-            border-radius: 8px;
-            background-color: #2e2e2e;
-            color: white;
+            border: 0.5px solid #ebd9eb40;
+            border-radius: 10px;
+            background-color: #ebd9eb03;
+            color: #000000;
+            box-shadow: 0px 1px 7px 2px #ebd9eb;
         }
 
         .btn-remove {
